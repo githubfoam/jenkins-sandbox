@@ -1,5 +1,4 @@
 ---
-
 - name: Add mappings to /etc/resolv.conf
   # vagrant environment nodes
   blockinfile:
@@ -9,4 +8,4 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
   with_items:
     - { name: nameserver, ip: 8.8.8.8 }
-  when: add_resolv_entries
+
