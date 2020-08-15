@@ -23,9 +23,9 @@ matrix:
           - sudo make deploy-boxes
       after_success:
         - deactivate
-        - vagrant destroy -f
+        - sudo vagrant destroy -f
         - ls -lai
-        - rm Vagrantfile                
+        - sudo rm Vagrantfile                
         - ls -lai
 
     # TESTED OK
