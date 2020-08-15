@@ -9,7 +9,7 @@
   guest_port: 1234
   host_port: 1234
   server_bootstrap: "provisioning/deploy.yml"
-  shell_provision: "provisioning/bootstrap.sh"
+  shell_provision: "provisioning/deploy_jenkins.sh"
   # ansible_version: "2.9.7"
   ansible_compatibility_mode: "2.0"  
 
