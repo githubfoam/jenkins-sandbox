@@ -1,0 +1,77 @@
+---
+#https://docs.ansible.com/ansible/2.3/include_vars_module.html
+- name: "Load a variable file based on the OS type, or a default if not found"
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}.yml"
+    -  "{{ ansible_distribution }}_{{ ansible_distribution_version }}.yml"
+    - default.yml
+
+
+- name: "Install system packages"
+  package:
+    name: '{{ system_packages }}'
+    use: '{{ ansible_pkg_mgr }}'
+    state: present
+
+- name: "Add Ubuntu lxd repository"
+  apt_repository:
+    repo: "ppa:ubuntu-lxc/lxd-stable" 
+
+- name: "Update LXD package"
+  package:
+    name: lxd
+    state: latest    
+
+- name: "Install packages"
+  package:
+      name: "{{ item }}"
+      state: present
+  with_items:
+    - go-agent
+    - maven
+    - jq    
+
+- name: "Add user to lxd group"
+  user: 
+      name: go
+      groups: lxd
+      append: yes
+
+- name: "Enable and start go-agent"
+  service:
+      name: go-agent
+      enabled: yes
+      state: started    
+
+
+- name: "Generate custom maven settings file" 
+  copy:
+      dest: /tmp/workernode-maven-settings.xml
+      content: |
+        <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                             http://maven.apache.org/xsd/settings-1.0.0.xsd">
+           
+          <proxies>
+          {% if ansible_env.http_proxy is defined %}
+            <proxy>
+                <id>my-proxy-http</id>
+                <active>true</active>
+                <protocol>http</protocol>
+                <host>{{ ansible_env.http_proxy | urlsplit('hostname') }}</host>
+                <port>{{ ansible_env.http_proxy | urlsplit('port') }}</port>
+             </proxy>
+          {% endif %} 
+          {% if ansible_env.https_proxy is defined %}
+            <proxy>
+                <id>my-proxy-https</id>
+                <active>true</active>
+                <protocol>https</protocol>
+                <host>{{ ansible_env.https_proxy | urlsplit('hostname') }}</host>
+                <port>{{ ansible_env.https_proxy | urlsplit('port') }}</port>
+             </proxy>
+          {% endif %} 
+          </proxies>
+        </settings>

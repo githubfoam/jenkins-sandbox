@@ -1,0 +1,36 @@
+---
+# - name: "Boot all hosts"
+#   gather_facts: true
+#   hosts:  all
+#   become: yes
+#   vars:
+#     add_host_entries: true
+#     add_resolv_entries: true
+#   # pre_tasks:
+#   # - name: "Setting hostname"
+#   #   shell: "hostnamectl set-hostname {{ inventory_hostname }}"
+#   roles:
+#     - common
+
+- name: "deploy jenkins server"
+  gather_facts: true
+  hosts: vg-compute-06   
+  become: yes
+  roles:
+    - common
+
+# - name: "Install gocd servers"
+#   gather_facts: true
+#   hosts: vg-compute-07   
+#   become: yes
+#   roles:
+#     - gocd # common requirements
+#     - gocd-servers
+
+# - name: "Install gocd agents"
+#   gather_facts: true
+#   hosts: vg-compute-08   
+#   become: yes
+#   roles:
+#     - gocd # common requirements
+#     - gocd-servers

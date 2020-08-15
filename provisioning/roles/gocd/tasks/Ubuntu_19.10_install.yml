@@ -1,0 +1,33 @@
+---
+#https://docs.ansible.com/ansible/2.3/include_vars_module.html
+- name: "Load a variable file based on the OS type, or a default if not found"
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}.yml"
+    -  "{{ ansible_distribution }}_{{ ansible_distribution_version }}.yml"
+    - default.yml
+
+
+- name: "Install system packages"
+  package:
+    name: '{{ system_packages }}'
+    use: '{{ ansible_pkg_mgr }}'
+    state: present
+
+- name: "Add an Apt GoCD signing key"
+  apt_key:
+    url: https://download.gocd.org/GOCD-GPG-KEY.asc
+    state: present
+    
+- name: "Add GoCD repository"
+  apt_repository:
+    repo: "deb https://download.gocd.org /"   
+
+- name: "Install required packages"
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - openjdk-8-jdk-headless
+
+
