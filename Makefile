@@ -1,8 +1,8 @@
 IMAGE := alpine/fio
 APP:="scripts/usernetes-containerd.sh"
 
-deploy-topology:
-	bash scripts/deploy-topology.sh
+provision-bash-jenkins-ubuntu:
+	bash scripts/provision-bash-jenkins-ubuntu.sh
 
 deploy-boxes:
 	bash scripts/deploy-boxes.sh
