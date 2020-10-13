@@ -14,3 +14,4 @@ egrep -c '(vmx|svm)' /proc/cpuinfo #If 0 it means that your CPU doesn't support 
 addgroup libvirtd
 adduser  $(id -un) libvirtd #ensure that your username is added to the group libvirtd
 kvm-ok
+echo "=============================Install kvm qemu libvirt============================================================="

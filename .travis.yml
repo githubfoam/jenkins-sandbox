@@ -7,9 +7,8 @@ notifications:
 matrix:
   fast_finish: true
   include:  
-    
-    # TESTED OK
-    - name: "deploy jenkins centos"
+
+    - name: "deploy cakephp framework"
       dist: bionic
       language: python
       python: 3.7
@@ -21,31 +20,79 @@ matrix:
       script:
           - sudo make deploy-libvirt
           - sudo make deploy-vagrant
-          - sudo make deploy-boxes
+          - sudo make deploy-cakephp
       after_success:
         - deactivate
         - sudo vagrant destroy -f # required to run Vagrantfile template        
-        - sudo rm Vagrantfile # required to run Vagrantfile template                
-        
+        - sudo rm Vagrantfile # required to run Vagrantfile template 
 
-    # TESTED OK
-    - name: "deploy jenkins ubuntu"
+  
+    - name: "selenium test"
       dist: bionic
-      language: python
-      python: 3.7
+      language: java
+      addons:
+        chrome: stable
       before_install:
         - pip3 install virtualenv
         - virtualenv -p $(which python3) ~venvpy3
         - source ~venvpy3/bin/activate
         - pip install -r requirements.txt
+        - wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+        - unzip chromedriver_linux64.zip
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        - echo $TRAVIS_COMMIT
+        - echo $TRAVIS_TAG
+        - echo $TRAVIS_BRANCH
+        - echo $TRAVIS_BUILD_NUMBER
+        - echo $TRAVIS_REPO_SLUG        
+      cache:
+        directories:
+          - $HOME/.m2
       script:
-          - sudo make deploy-libvirt
-          - sudo make deploy-vagrant
-          - sudo make provision-bash-jenkins-ubuntu
+        - mvn verify
       after_success:
-        - deactivate 
+        - deactivate
         - sudo vagrant destroy -f # required to run Vagrantfile template        
-        - sudo rm Vagrantfile # required to run Vagrantfile template                   
+        - sudo rm Vagrantfile # required to run Vagrantfile template 
+
+    # TESTED OK
+    # - name: "deploy jenkins centos"
+    #   dist: bionic
+    #   language: python
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #     - pip install -r requirements.txt
+    #   script:
+    #       - sudo make deploy-libvirt
+    #       - sudo make deploy-vagrant
+    #       - sudo make deploy-boxes
+    #   after_success:
+    #     - deactivate
+    #     - sudo vagrant destroy -f # required to run Vagrantfile template        
+    #     - sudo rm Vagrantfile # required to run Vagrantfile template                
+        
+
+    # TESTED OK
+    # - name: "deploy jenkins ubuntu"
+    #   dist: bionic
+    #   language: python
+    #   python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #     - pip install -r requirements.txt
+    #   script:
+    #       - sudo make deploy-libvirt
+    #       - sudo make deploy-vagrant
+    #       - sudo make provision-bash-jenkins-ubuntu
+    #   after_success:
+    #     - deactivate 
+    #     - sudo vagrant destroy -f # required to run Vagrantfile template        
+    #     - sudo rm Vagrantfile # required to run Vagrantfile template                   
 
     # - name: "deploy gocd server and agents"
     #   dist: bionic

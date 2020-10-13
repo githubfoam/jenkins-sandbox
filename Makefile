@@ -1,6 +1,9 @@
 IMAGE := alpine/fio
 APP:="scripts/usernetes-containerd.sh"
 
+deploy-cakephp:
+	bash scripts/deploy-cakephp.sh
+
 provision-bash-jenkins-ubuntu:
 	bash scripts/provision-bash-jenkins-ubuntu.sh
 
