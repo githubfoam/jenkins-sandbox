@@ -24,23 +24,24 @@ matrix:
     #     - bash <(curl -s https://codecov.io/bash)
         # - deactivate
 
-    - name: "deploy maven checkstyle on bionic arm64"
-      dist: bionic
-      arch: amd64         
-      language: java
-      jdk:
-      - openjdk8
-      cache:
-        directories:
-        - ~/.m2
-      before_install:
-        - java -version
-      script:
-        - cd maven-checkstyle
-        - mvn site
-      after_success:
-        - bash <(curl -s https://codecov.io/bash)
-        - deactivate
+  # Caused by: java.lang.ClassNotFoundException: org.apache.maven.doxia.siterenderer.DocumentContent
+    # - name: "deploy maven checkstyle on bionic arm64"
+    #   dist: bionic
+    #   arch: amd64         
+    #   language: java
+    #   jdk:
+    #   - openjdk8
+    #   cache:
+    #     directories:
+    #     - ~/.m2
+    #   before_install:
+    #     - java -version
+    #   script:
+    #     - cd maven-checkstyle
+    #     - mvn site
+    #   after_success:
+    #     - bash <(curl -s https://codecov.io/bash)
+    #     - deactivate
 
     - name: "deploy maven checkstyle on bionic arm64"
       dist: bionic
@@ -64,6 +65,10 @@ matrix:
       dist: bionic
       arch: amd64         
       language: java
+      addons:
+        apt:
+          packages:
+            - xmlstarlet
       jdk:
       - openjdk8
       cache:
@@ -72,6 +77,8 @@ matrix:
       before_install:
         - java -version
       script:
+        - MVN_SETTINGS=${TRAVIS_HOME}/.m2/settings.xml
+        - xmlstarlet ed --inplace -d "//mirrors" $MVN_SETTINGS
         - cd maven-checkstyle
         - mvn checkstyle:checkstyle -Pgithub-maven-repo
         - mvn -f pom-google-custom-suppression.xml clean checkstyle:checkstyle -Pgithub-maven-repo
