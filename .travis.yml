@@ -14,7 +14,7 @@ matrix:
       jdk:
       - openjdk8
       before_install:
-        - java --version
+        - java -version
       script:
         - mvn clean package
         - mvn cobertura:cobertura
