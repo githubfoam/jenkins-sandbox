@@ -72,8 +72,8 @@ matrix:
         - docker run -d -p 8080:8080 -p 29418:29418 -e AUTH_TYPE=HTTP gerrit:local
         # curl: (56) Recv failure: Connection reset by peer
         # - curl  http://localhost:8080
-        - netstat -ntlp | awk '$4=="0.0.0.0:80"'
-        - wget --spider -S "http://localhost" 2>&1 | awk '/HTTP\// {print $2}'
+        - sudo netstat -ntlp | awk '$4=="0.0.0.0:80"'
+        - wget --spider -S "http://localhost:8080" 2>&1 | awk '/HTTP\// {print $2}'
       after_success:
         - deactivate
 
