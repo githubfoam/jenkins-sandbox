@@ -8,193 +8,21 @@ matrix:
   fast_finish: true
   include:  
 
-    - name: "deploy gerrit  wo snaps on focal amd64"
-      dist: focal
-      arch: amd64
-      services:
-      - docker
-      language: python
-      # python: 3.7
-      before_install:
-        - pip3 install virtualenv
-        - virtualenv -p $(which python3) ~venvpy3
-        - source ~venvpy3/bin/activate
-        - pip install -r requirements.txt
-      script:
-        - cd gerrit
-        - docker build -t gerrit:local . --file Dockerfile.openfrontier
-        - docker image ls 
-        - docker run -d -p 8080:8080 -p 29418:29418 gerrit:local
-        # curl: (56) Recv failure: Connection reset by peer
-        # - curl  http://localhost:8080
-      after_success:
-        - deactivate
-
-    - name: "deploy gerrit  wo snaps on bionic amd64"
-      dist: bionic
-      arch: amd64
-      services:
-      - docker
-      language: python
-      # python: 3.7
-      before_install:
-        - pip3 install virtualenv
-        - virtualenv -p $(which python3) ~venvpy3
-        - source ~venvpy3/bin/activate
-        - pip install -r requirements.txt
-      script:
-        - cd gerrit
-        - docker build -t gerrit:local . --file Dockerfile.openfrontier
-        - docker image ls 
-        - docker run -d -p 8080:8080 -p 29418:29418 gerrit:local
-        # curl: (56) Recv failure: Connection reset by peer
-        # - curl  http://localhost:8080
-      after_success:
-        - deactivate
-
-    - name: "deploy gerrit w plugins wo snaps on bionic amd64"
-      dist: bionic
-      arch: amd64
-      services:
-      - docker
-      language: python
-      # python: 3.7
-      before_install:
-        - pip3 install virtualenv
-        - virtualenv -p $(which python3) ~venvpy3
-        - source ~venvpy3/bin/activate
-        - pip install -r requirements.txt
-      script:
-        - cd gerrit
-        - docker build -t gerrit:local . --file Dockerfile.openfrontier
-        - docker image ls 
-        #Install download-commands plugin on start up
-        - docker run -d -p 8080:8080 -p 29418:29418 -e GERRIT_INIT_ARGS='--install-plugin=download-commands' gerrit:local
-      after_success:
-        - deactivate
-
-    - name: "deploy gerrit HTTP authentication wo snaps on bionic amd64"
-      dist: bionic
-      arch: amd64
-      services:
-      - docker
-      language: python
-      # python: 3.7
-      before_install:
-        - pip3 install virtualenv
-        - virtualenv -p $(which python3) ~venvpy3
-        - source ~venvpy3/bin/activate
-        - pip install -r requirements.txt
-      script:
-        - cd gerrit
-        - docker build -t gerrit:local . --file Dockerfile.openfrontier
-        - docker image ls 
-        # Use HTTP authentication type
-        - docker run -d -p 8080:8080 -p 29418:29418 -e AUTH_TYPE=HTTP gerrit:local
-        # curl: (56) Recv failure: Connection reset by peer
-        # - curl  http://localhost:8080
-        # - curl -I "http://localhost:8080" 2>&1 | awk '/HTTP\// {print $2}' # see only the HTTP status code
-        - sudo netstat -ntlp | awk '$4=="127.0.0.1:80"'
-        # - wget -S --spider http://localhost:8080 #Only Header Information 
-        - wget --spider -S "http://localhost:8080" 2>&1 | awk '/HTTP\// {print $2}' #see only the HTTP status code
-        - sudo apt-get install -yyq lynx
-        - lynx -head -dump http://localhost:8080 #Check Whether a Website is up or down
-      after_success:
-        - deactivate
-
-    - name: "deploy gerrit w Sync timezone wo snaps on bionic amd64"
-      dist: bionic
-      arch: amd64
-      services:
-      - docker
-      language: python
-      # python: 3.7
-      before_install:
-        - pip3 install virtualenv
-        - virtualenv -p $(which python3) ~venvpy3
-        - source ~venvpy3/bin/activate
-        - pip install -r requirements.txt
-      script:
-        - cd gerrit
-        - docker build -t gerrit:local . --file Dockerfile.openfrontier
-        - docker image ls 
-        # Sync timezone with the host server.
-        - docker run -d -p 8080:8080 -p 29418:29418 -v /etc/localtime:/etc/localtime:ro gerrit:local
-        # curl: (56) Recv failure: Connection reset by peer
-        # - curl  http://localhost:8080
-        # - curl -I "http://localhost:8080" 2>&1 | awk '/HTTP\// {print $2}' # see only the HTTP status code
-        - sudo netstat -ntlp | awk '$4=="127.0.0.1:80"'
-        # - wget -S --spider http://localhost:8080 #Only Header Information 
-        - wget --spider -S "http://localhost:8080" 2>&1 | awk '/HTTP\// {print $2}' #see only the HTTP status code
-        - sudo apt-get install -yyq lynx
-        - lynx -head -dump http://localhost:8080 #Check Whether a Website is up or down
-      after_success:
-        - deactivate
-
-    - name: "Use another container as the gerrit site storage  wo snaps on bionic amd64"
-      dist: bionic
-      arch: amd64
-      services:
-      - docker
-      language: python
-      # python: 3.7
-      before_install:
-        - pip3 install virtualenv
-        - virtualenv -p $(which python3) ~venvpy3
-        - source ~venvpy3/bin/activate
-        - pip install -r requirements.txt
-      script:
-        - cd gerrit
-        - docker build -t gerrit:local . --file Dockerfile.openfrontier
-        - docker image ls 
-        - docker run --name gerrit_local_volume gerrit:local echo "Gerrit volume container."
-        - docker run -d --volumes-from gerrit_local_volume -p 8080:8080 -p 29418:29418 gerrit:local
-        # - docker run -d -p 8080:8080 -p 29418:29418 gerrit:local
-        # curl: (56) Recv failure: Connection reset by peer
-        # - curl  http://localhost:8080
-      after_success:
-        - deactivate
-
-    - name: "Use a docker named volume as the gerrit site storage wo snaps on bionic amd64"
-      dist: bionic
-      arch: amd64
-      services:
-      - docker
-      language: python
-      # python: 3.7
-      before_install:
-        - pip3 install virtualenv
-        - virtualenv -p $(which python3) ~venvpy3
-        - source ~venvpy3/bin/activate
-        - pip install -r requirements.txt
-      script:
-        - cd gerrit
-        - docker build -t gerrit:local . --file Dockerfile.openfrontier
-        - docker image ls 
-        # do not use host volumes in particular directories under the home directory like ~/gerrit as a gerrit volume
-        - docker volume create gerrit_local_volume
-        # Initialize and start gerrit using the local directory
-        - docker run -d -v gerrit_local_volume:/var/gerrit/review_site -p 8080:8080 -p 29418:29418 gerrit:local
-        # curl: (56) Recv failure: Connection reset by peer
-        # - curl  http://localhost:8080
-      after_success:
-        - deactivate
-
 # TESTED OK
-    # - name: "deploy argo cd  wo snaps on bionic amd64"
-    #   dist: bionic
-    #   arch: amd64
-    #   language: python
-    #   # python: 3.7
-    #   before_install:
-    #     - pip3 install virtualenv
-    #     - virtualenv -p $(which python3) ~venvpy3
-    #     - source ~venvpy3/bin/activate
-    #     - pip install -r requirements.txt
-    #   script:
-    #     - sudo make deploy-minikube-kubectl-helm-latest
-    #   after_success:
-    #     - deactivate
+    - name: "deploy jenkins cd  wo snaps on bionic amd64"
+      dist: bionic
+      arch: amd64
+      language: python
+      # python: 3.7
+      before_install:
+        - pip3 install virtualenv
+        - virtualenv -p $(which python3) ~venvpy3
+        - source ~venvpy3/bin/activate
+        - pip install -r requirements.txt
+      script:
+        - sudo make deploy-minikube-kubectl-helm-latest
+      after_success:
+        - deactivate
 
 # # https://www.jenkins.io/doc/book/installing/macos/
 #     - name: "deploy jenkins w homebrew on macOS 10.15.7 osx xcode12.2"
