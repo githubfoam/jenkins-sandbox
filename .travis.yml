@@ -122,10 +122,11 @@ matrix:
         - docker run -d -p 8080:8080 -p 29418:29418 -v /etc/localtime:/etc/localtime:ro gerrit:local
         # curl: (56) Recv failure: Connection reset by peer
         # - curl  http://localhost:8080
-        - curl -I "http://localhost:8080" 2>&1 | awk '/HTTP\// {print $2}' # see only the HTTP status code
+        # - curl -I "http://localhost:8080" 2>&1 | awk '/HTTP\// {print $2}' # see only the HTTP status code
         - sudo netstat -ntlp | awk '$4=="127.0.0.1:80"'
-        - wget -S --spider http://localhost:8080 #Only Header Information 
+        # - wget -S --spider http://localhost:8080 #Only Header Information 
         - wget --spider -S "http://localhost:8080" 2>&1 | awk '/HTTP\// {print $2}' #see only the HTTP status code
+        - sudo apt-get install -yyq lynx
         - lynx -head -dump http://localhost:8080 #Check Whether a Website is up or down
       after_success:
         - deactivate
