@@ -8,185 +8,30 @@ matrix:
   fast_finish: true
   include:  
 
-# TESTED OK
-    - name: "deploy jenkins cd  wo snaps on bionic amd64"
-      dist: bionic
-      arch: amd64
-      language: python
-      # python: 3.7
+
+# https://www.jenkins.io/doc/book/installing/macos/
+    - name: "deploy jenkins w homebrew on macOS 10.15.7 osx xcode12.2"
+      os: osx
+      osx_image:
+        - xcode12.2 #macOS 10.15.7
+      addons:
+        homebrew:
+          packages:
+          - jenkins-lts #Long-term support (LTS)
+          - python
+          - git
+          update: true
+      language: java
       before_install:
         - pip3 install virtualenv
         - virtualenv -p $(which python3) ~venvpy3
         - source ~venvpy3/bin/activate
+        - python --version
         - pip install -r requirements.txt
       script:
-        - sudo make deploy-minikube-kubectl-helm-latest
+      - brew services start jenkins-lts
+      - brew services stop jenkins-lts
+      - sudo cat /var/lib/jenkins/secrets/initialAdminPassword 
+      # - cat /Users/travis/.jenkins/secrets/initialAdminPassword
       after_success:
         - deactivate
-
-# # https://www.jenkins.io/doc/book/installing/macos/
-#     - name: "deploy jenkins w homebrew on macOS 10.15.7 osx xcode12.2"
-#       os: osx
-#       osx_image:
-#         - xcode12.2 #macOS 10.15.7
-#       addons:
-#         homebrew:
-#           packages:
-#           - jenkins-lts #Long-term support (LTS)
-#           - python
-#           - git
-#           update: true
-#       language: java
-#       before_install:
-#         - pip3 install virtualenv
-#         - virtualenv -p $(which python3) ~venvpy3
-#         - source ~venvpy3/bin/activate
-#         - python --version
-#         - pip install -r requirements.txt
-#       script:
-#       - brew services start jenkins-lts
-#       - brew services stop jenkins-lts
-#       - sudo cat /var/lib/jenkins/secrets/initialAdminPassword 
-#       # - cat /Users/travis/.jenkins/secrets/initialAdminPassword
-#       after_success:
-#         - deactivate
-
-    # - name: "deploy Jenkins with Docker"
-    #   dist: bionic
-    #   language: python
-    #   python: 3.7
-    #   services: docker
-    #   before_install:
-    #     - pip3 install virtualenv
-    #     - virtualenv -p $(which python3) ~venvpy3
-    #     - source ~venvpy3/bin/activate
-    #     - pip install -r requirements.txt
-    #   script:
-    #       - docker run -p 8080:8080 -p 50000:50000 -v ~/jenkins_home:/var/jenkins_home jenkins/jenkins:lts
-    #       - sudo docker exec ${CONTAINER_ID or CONTAINER_NAME} cat /var/jenkins_home/secrets/initialAdminPassword
-    #       # - curl http://localhost:8080
-    #   after_success:
-    #     - deactivate
-    #     - sudo vagrant destroy -f # required to run Vagrantfile template        
-    #     - sudo rm Vagrantfile # required to run Vagrantfile template 
-
-
-    # - name: "deploy cakephp framework"
-    #   dist: bionic
-    #   language: python
-    #   python: 3.7
-    #   before_install:
-    #     - pip3 install virtualenv
-    #     - virtualenv -p $(which python3) ~venvpy3
-    #     - source ~venvpy3/bin/activate
-    #     - pip install -r requirements.txt
-    #   script:
-    #       - sudo make deploy-libvirt
-    #       - sudo make deploy-vagrant
-    #       - sudo make deploy-cakephp
-    #   after_success:
-    #     - deactivate
-    #     - sudo vagrant destroy -f # required to run Vagrantfile template        
-    #     - sudo rm Vagrantfile # required to run Vagrantfile template 
-
-  
-    # - name: "selenium test"
-    #   dist: bionic
-    #   language: java
-    #   addons:
-    #     chrome: stable
-    #   before_install:
-    #     - pip3 install virtualenv
-    #     - virtualenv -p $(which python3) ~venvpy3
-    #     - source ~venvpy3/bin/activate
-    #     - pip install -r requirements.txt
-    #     - wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
-    #     - unzip chromedriver_linux64.zip
-    #     - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-    #     - echo $TRAVIS_COMMIT
-    #     - echo $TRAVIS_TAG
-    #     - echo $TRAVIS_BRANCH
-    #     - echo $TRAVIS_BUILD_NUMBER
-    #     - echo $TRAVIS_REPO_SLUG        
-    #   cache:
-    #     directories:
-    #       - $HOME/.m2
-    #   script:
-    #     - mvn verify
-    #   after_success:
-    #     - deactivate
-    #     - sudo vagrant destroy -f # required to run Vagrantfile template        
-    #     - sudo rm Vagrantfile # required to run Vagrantfile template 
-
-    # # TESTED OK
-    # - name: "deploy jenkins centos"
-    #   dist: bionic
-    #   language: python
-    #   python: 3.7
-    #   before_install:
-    #     - pip3 install virtualenv
-    #     - virtualenv -p $(which python3) ~venvpy3
-    #     - source ~venvpy3/bin/activate
-    #     - pip install -r requirements.txt
-    #   script:
-    #       - sudo make deploy-libvirt
-    #       - sudo make deploy-vagrant
-    #       - sudo make deploy-boxes
-    #   after_success:
-    #     - deactivate
-    #     - sudo vagrant destroy -f # required to run Vagrantfile template        
-    #     - sudo rm Vagrantfile # required to run Vagrantfile template                
-        
-
-    # # TESTED OK
-    # - name: "deploy jenkins ubuntu"
-    #   dist: bionic
-    #   language: python
-    #   python: 3.7
-    #   before_install:
-    #     - pip3 install virtualenv
-    #     - virtualenv -p $(which python3) ~venvpy3
-    #     - source ~venvpy3/bin/activate
-    #     - pip install -r requirements.txt
-    #   script:
-    #       - sudo make deploy-libvirt
-    #       - sudo make deploy-vagrant
-    #       - sudo make provision-bash-jenkins-ubuntu
-    #   after_success:
-    #     - deactivate 
-    #     - sudo vagrant destroy -f # required to run Vagrantfile template        
-    #     - sudo rm Vagrantfile # required to run Vagrantfile template                   
-
-    # - name: "deploy gocd server and agents"
-    #   dist: bionic
-    #   language: python
-    #   python: 3.7
-    #   before_install:
-    #     - pip3 install virtualenv
-    #     - virtualenv -p $(which python3) ~venvpy3
-    #     - source ~venvpy3/bin/activate
-    #     - pip install -r requirements.txt
-    #   script:
-    #       - sudo make deploy-libvirt
-    #       - sudo make deploy-vagrant
-    #       - sudo make deploy-topology
-    #       # - travis_wait 20 waitfortrav.sh
-    #   after_success:
-    #     - deactivate    
-
-    # - name: "deploy gocd server docker-compose"
-    #   dist: bionic
-    #   language: python
-    #   python: 3.7
-    #   before_install:
-    #     - pip3 install virtualenv
-    #     - virtualenv -p $(which python3) ~venvpy3
-    #     - source ~venvpy3/bin/activate
-    #     - pip install -r requirements.txt
-    #   script:
-    #       - docker-compose up
-    #       - curl http://localhost
-    #       # - curl -X POST http://localhost/go/api/admin/pipelines -H 'Accept: application/vnd.go.cd.v4+json' -H 'Content-Type: application/json' -d @example-pipeline.json
-    #       # - travis_wait 20 waitfortrav.sh
-    #   after_success:
-    #     - deactivate                
