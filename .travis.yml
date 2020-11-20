@@ -8,10 +8,11 @@ matrix:
   fast_finish: true
   include:  
 
-# TESTED OK
-    - name: "deploy argo cd  wo snaps on bionic amd64"
-      dist: bionic
+    - name: "deploy gerrit  wo snaps on focal amd64"
+      dist: focal
       arch: amd64
+      services:
+      - docker
       language: python
       # python: 3.7
       before_install:
@@ -20,9 +21,48 @@ matrix:
         - source ~venvpy3/bin/activate
         - pip install -r requirements.txt
       script:
-        - sudo make deploy-minikube-kubectl-helm-latest
+        - cd gerrit
+        - docker build -t gerrit:local --file Dockerfile.openfrontier
+        - docker image ls 
+        - docker run -d -p 8080:8080 -p 29418:29418 gerrit:local
       after_success:
         - deactivate
+
+    - name: "deploy gerrit  wo snaps on bionic amd64"
+      dist: bionic
+      arch: amd64
+      services:
+      - docker
+      language: python
+      # python: 3.7
+      before_install:
+        - pip3 install virtualenv
+        - virtualenv -p $(which python3) ~venvpy3
+        - source ~venvpy3/bin/activate
+        - pip install -r requirements.txt
+      script:
+        - cd gerrit
+        - docker build -t gerrit:local --file Dockerfile.openfrontier
+        - docker image ls 
+        - docker run -d -p 8080:8080 -p 29418:29418 gerrit:local
+      after_success:
+        - deactivate
+
+# TESTED OK
+    # - name: "deploy argo cd  wo snaps on bionic amd64"
+    #   dist: bionic
+    #   arch: amd64
+    #   language: python
+    #   # python: 3.7
+    #   before_install:
+    #     - pip3 install virtualenv
+    #     - virtualenv -p $(which python3) ~venvpy3
+    #     - source ~venvpy3/bin/activate
+    #     - pip install -r requirements.txt
+    #   script:
+    #     - sudo make deploy-minikube-kubectl-helm-latest
+    #   after_success:
+    #     - deactivate
 
 # # https://www.jenkins.io/doc/book/installing/macos/
 #     - name: "deploy jenkins w homebrew on macOS 10.15.7 osx xcode12.2"
