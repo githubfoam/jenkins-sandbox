@@ -52,6 +52,31 @@ matrix:
       after_success:
         - deactivate
 
+    - name: "deploy gerrit HTTP authentication wo snaps on bionic amd64"
+      dist: bionic
+      arch: amd64
+      services:
+      - docker
+      language: python
+      # python: 3.7
+      before_install:
+        - pip3 install virtualenv
+        - virtualenv -p $(which python3) ~venvpy3
+        - source ~venvpy3/bin/activate
+        - pip install -r requirements.txt
+      script:
+        - cd gerrit
+        - docker build -t gerrit:local . --file Dockerfile.openfrontier
+        - docker image ls 
+        # Use HTTP authentication type
+        - docker run -d -p 8080:8080 -p 29418:29418 -e AUTH_TYPE=HTTP gerrit:local
+        # curl: (56) Recv failure: Connection reset by peer
+        # - curl  http://localhost:8080
+        - netstat -ntlp | awk '$4=="0.0.0.0:80"'
+        - wget --spider -S "http://localhost" 2>&1 | awk '/HTTP\// {print $2}'
+      after_success:
+        - deactivate
+
 # TESTED OK
     # - name: "deploy argo cd  wo snaps on bionic amd64"
     #   dist: bionic
