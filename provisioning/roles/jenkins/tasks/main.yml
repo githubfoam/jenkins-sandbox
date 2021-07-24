@@ -8,11 +8,6 @@
     - " ansible_distribution_release: {{ hostvars[inventory_hostname].ansible_distribution_release }}"
     - " ansible_distribution_version: {{ hostvars[inventory_hostname].ansible_distribution_version }}"
 
-- name: "Add /etc/hosts entries"
-  include_tasks: hosts_entry.yml
-
-- name: "Add /etc/resolv.conf entries"
-  include_tasks: resolv_entry.yml
 
 - name: "Install required packages"
   package:
@@ -28,3 +23,10 @@
 
 - name: "Install {{ ansible_distribution }}-{{ ansible_distribution_version }}"
   include_tasks: "{{ ansible_distribution }}_{{ ansible_distribution_version }}_install.yml"
+
+# - name: "import assert.yml"
+#   ansible.builtin.import_tasks: assert.yml
+  # run_once: yes
+  # delegate_to: localhost
+
+

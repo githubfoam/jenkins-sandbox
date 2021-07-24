@@ -174,3 +174,4 @@ matrix:
     #       # - travis_wait 20 waitfortrav.sh
     #   after_success:
     #     - deactivate                
+        - deactivate                

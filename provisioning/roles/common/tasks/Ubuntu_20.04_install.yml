@@ -13,19 +13,3 @@
     name: '{{ system_packages }}'
     use: '{{ ansible_pkg_mgr }}'
     state: present
-
-- name: "upgrade all packages"
-  yum:
-    name: '*'
-    state: latest 
-
-- name: "ensure a list of packages installed"
-  yum:
-    name: "{{ packages }}"
-    state: present
-  vars:
-    packages:
-    - "@Development tools"
-    - nano
-    - epel-release    
- 
