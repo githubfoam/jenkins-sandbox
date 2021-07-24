@@ -5,4 +5,20 @@
   become: yes
   roles:
     - common
+    - jenkins
 
+- name: "deploy jenkins slave"
+  gather_facts: true
+  hosts: vg-compute-07   
+  become: yes
+  roles:
+    - common
+    - jenkins-slave
+
+- name: "deploy jenkins slave"
+  gather_facts: true
+  hosts: vg-compute-08 
+  become: yes
+  roles:
+    - common
+    - jenkins-slave
