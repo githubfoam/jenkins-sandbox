@@ -5,6 +5,7 @@ configuration as code
 
 ~~~~
 >vagrant up vg-compute-06
+>vagrant up vg-compute-07
 ~~~~
 ~~~~
 https://www.jenkins.io/
