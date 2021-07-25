@@ -1,7 +1,7 @@
 ---
 - name: "deploy jenkins vg-compute-07 "
   gather_facts: true
-  hosts: vg-compute-07   
+  hosts: all   
   become: yes
   # roles:
   #   - common
