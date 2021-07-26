@@ -1,5 +1,5 @@
 ---
 
-- include_tasks: prepare.yml
+- include_tasks: setup-RedHat.yml
 
 # - include_tasks: docker.yml
