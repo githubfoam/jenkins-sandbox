@@ -2,7 +2,8 @@
 - name: "deploy jenkins localhost "
   gather_facts: true
   hosts: localhost   
-  become: no
+  become: yes
+  become_method: sudo
   roles:
     # - common
     - docker
