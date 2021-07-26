@@ -1,2 +1,2 @@
 [webservers]
-192.168.20.15 ansible_user=jenkins-slave1 ansible_ssh_private_key_file=/home/jenkins-slave1/.ssh/id_rsa
+192.168.20.15 ansible_user=vagrant ansible_ssh_private_key_file=/home/vagrant/.ssh/id_rsa
