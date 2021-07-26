@@ -1,5 +1,5 @@
 ---
-- name: "deploy jenkins vg-compute-07 "
+- name: "deploy jenkins localhost "
   # gather_facts: true
   hosts: localhost   
   become: yes
