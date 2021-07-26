@@ -1,6 +1,6 @@
 ---
 - name: "deploy jenkins localhost "
-  gather_facts: false
+  gather_facts: true
   hosts: localhost   
   become: yes
   roles:
