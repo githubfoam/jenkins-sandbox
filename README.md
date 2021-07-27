@@ -8,6 +8,8 @@ del Vagrantfile
 vagrant init --template Vagrantfile.erb 
 vagrant up vg-compute-10
 
+http://192.168.20.18:8080/
+
 ~~~~
 ~~~~
 https://www.jenkins.io/
