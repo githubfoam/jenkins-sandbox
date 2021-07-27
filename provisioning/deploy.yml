@@ -1,42 +1,9 @@
 ---
 - name: "deploy jenkins server"
   gather_facts: true
-  hosts: vg-compute-06   
-  become: yes
-  roles:
-    - common
-    - jenkins
-
-- name: "deploy jenkins slave"
-  gather_facts: true
-  hosts: vg-compute-07   
-  become: yes
-  roles:
-    - common
-    - jenkins-slave
-
-- name: "deploy jenkins slave"
-  gather_facts: true
-  hosts: vg-compute-08 
-  become: yes
-  roles:
-    - common
-    - jenkins-slave
-
-- name: "deploy jenkins server"
-  gather_facts: true
-  hosts: vg-compute-09
-  become: yes
-  roles:
-    - common
-    - jenkins
-    # - jenkins-casc 
-
-- name: "deploy jenkins server"
-  gather_facts: true
   hosts: vg-compute-10
   become: yes
   roles:
     - common
     - jenkins   
-    # - jenkins-casc  
+ 
