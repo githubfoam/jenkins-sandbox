@@ -22,3 +22,21 @@
   roles:
     - common
     - jenkins-slave
+
+- name: "deploy jenkins server"
+  gather_facts: true
+  hosts: vg-compute-09
+  become: yes
+  roles:
+    - common
+    - jenkins
+    # - jenkins-casc 
+
+- name: "deploy jenkins server"
+  gather_facts: true
+  hosts: vg-compute-10
+  become: yes
+  roles:
+    - common
+    - jenkins   
+    # - jenkins-casc  
