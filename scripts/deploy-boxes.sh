@@ -16,11 +16,11 @@ vagrant box add "bento/centos-8.2" --provider=virtualbox
 vagrant mutate "bento/centos-8.2" libvirt
 vagrant init --template Vagrantfile.template.erb 
 # must be created in project root directory with Vagrantfile template file
-vagrant up --provider=libvirt "vg-compute-06" 
+vagrant up --provider=libvirt "vg-compute-10" 
 
 
 vagrant init --template Vagrantfile.erb 
-vagrant up --provider=libvirt "vg-compute-06"
+vagrant up --provider=libvirt "vg-compute-10"
 
 
 vagrant box list #veridy installed boxes

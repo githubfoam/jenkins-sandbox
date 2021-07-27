@@ -2,8 +2,8 @@
 - vagrant_box_host: "vg-compute-10"
   # vagrant_box: "bento/ubuntu-21.04" #NOT OK
   # vagrant_box: "bento/ubuntu-20.04" #OK
-  # vagrant_box: "bento/centos-8.3"
-  vagrant_box: "bento/centos-stream-8"  
+  # vagrant_box: "bento/centos-8.3" #OK
+  vagrant_box: "bento/centos-stream-8" #OK 
   vbox_name: "vbox-compute-10"
   vbox_ram: 512
   vbox_cpu: 2
