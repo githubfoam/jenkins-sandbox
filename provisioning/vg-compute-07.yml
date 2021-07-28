@@ -1,7 +1,7 @@
 ---
 - name: "deploy jenkins localhost "
   gather_facts: true
-  hosts: localhost   
+  hosts: all   
   become: yes
   become_user: jenkins-slave1 #sudo: a password is required fix
   # become_method: sudo
