@@ -3,6 +3,7 @@
   gather_facts: true
   hosts: localhost   
   become: yes
+  become_user: jenkins-slave1
   become_method: sudo
   roles:
     # - common
