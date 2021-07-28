@@ -3,7 +3,7 @@
   gather_facts: true
   hosts: localhost   
   become: yes
-  become_user: jenkins-slave1
+  become_user: root
   become_method: sudo
   # roles:
     # - common
@@ -25,5 +25,5 @@
         - docker-common
         - docker-engine
       state: absent      
-    become_method: sudo
+
 # - include_tasks: prepare.yml
