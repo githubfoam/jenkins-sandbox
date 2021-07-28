@@ -10,19 +10,11 @@ pipeline {
             }
         }
         
-        stage("Deployment"){
+        stage('Execute Ansible') {
             steps{
-                ansiColor('xterm') {
-                    ansiblePlaybook(
-                        playbook: 'provisioning/vg-compute-07.yml',
-                        inventory: 'dev.inv',
-                        colorized: true,
-            become: true,
-            becomeUser: 'jenkins-slave1',
-            extras: '-vvv'
-                    )
-                }
+                ansiblePlaybook credentialsId: '4b288511-8145-48f4-8890-28b0ac79f6ae', disableHostKeyChecking: true, installation: 'ansible', inventory: 'dev.inv', playbook: 'provisioning/vg-compute-07.yml'
             }
+            
         }
     }
 }
