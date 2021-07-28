@@ -8,8 +8,8 @@
       - docker-engine
     state: absent
   become: yes
-  # become_user: jenkins-slave1
-  # become_method: sudo
+  become_user: jenkins-slave1
+  become_method: sudo
 
 - name: Add Docker GPG key.
   rpm_key:
