@@ -16,5 +16,19 @@ pipeline {
             }
             
         }
+        stage("Deployment"){
+            steps{
+                ansiColor('xterm') {
+                    ansiblePlaybook(
+                        playbook: 'provisioning/vg-compute-07.yml',
+                        inventory: 'dev.inv',
+                        colorized: true,
+            become: true,
+            becomeUser: 'jenkins-slave1',
+            extras: '-vvv'
+                    )
+                }
+            }
+        }
     }
 }
