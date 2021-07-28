@@ -5,10 +5,10 @@
   become: yes
   become_user: jenkins-slave1
   become_method: sudo
-  roles:
+  # roles:
     # - common
     # - docker
-  # tasks:
+  tasks:
   # - name: Ensure apache is at the latest version
   #   ansible.builtin.yum:
   #     name: httpd
