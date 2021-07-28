@@ -3,10 +3,10 @@
   gather_facts: true
   hosts: localhost   
   become: yes
-  become_user: root
+  become_user: jenkins-slave1
   become_method: sudo
-  # roles:
-    # - common
+  roles:
+    - common
     # - docker
   tasks:
   # - name: Ensure apache is at the latest version
@@ -16,14 +16,6 @@
   - name: "OS fingerprinting "
     debug:
       msg:
-      - "First message"
-
-  - name: "Ensure old versions of Docker are not installed."
-    yum:
-      name:
-        - docker
-        - docker-common
-        - docker-engine
-      state: absent      
+      - "First message"   
 
 # - include_tasks: prepare.yml
