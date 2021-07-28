@@ -12,7 +12,7 @@ pipeline {
         
         stage('Execute Ansible') {
             steps{
-                ansiblePlaybook credentialsId: '4b288511-8145-48f4-8890-28b0ac79f6ae', disableHostKeyChecking: true, installation: 'ansible', inventory: 'dev.inv', playbook: 'provisioning/vg-compute-07.yml'
+                ansiblePlaybook credentialsId: '4b288511-8145-48f4-8890-28b0ac79f6ae', disableHostKeyChecking: true, installation: 'ansible', inventory: 'dev.inv', playbook: 'provisioning/vg-compute-07.yml',extras: '-vvv'
             }
             
         }
