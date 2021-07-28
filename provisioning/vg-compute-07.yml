@@ -3,8 +3,8 @@
   gather_facts: true
   hosts: localhost   
   become: yes
-  # become_user: jenkins-slave1
-  become_method: sudo
+  become_user: jenkins-slave1 #sudo: a password is required fix
+  # become_method: sudo
   roles:
     - common
     # - docker
