@@ -13,9 +13,9 @@
   #   ansible.builtin.yum:
   #     name: httpd
   #     state: latest    
-  # - name: "OS fingerprinting "
-  #   debug:
-  #     msg:
-  #     - "First message"
+  - name: "OS fingerprinting "
+    debug:
+      msg:
+      - "First message"
 
 # - include_tasks: prepare.yml
