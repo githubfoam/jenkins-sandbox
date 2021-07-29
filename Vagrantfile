@@ -28,7 +28,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
               vb.memory = server["vbox_ram"]
               vb.cpus = server["vbox_cpu"]
               vb.gui = false
-              vb.customize ["modifyvm", :id, "--groups", "/mokapot-sandbox"] # create vbox group
+              vb.customize ["modifyvm", :id, "--groups", "/jenkins-sandbox"] # create vbox group
           end # end of box.vm.providers
 
           box.vm.provision "shell", path: server["shell_provision"]

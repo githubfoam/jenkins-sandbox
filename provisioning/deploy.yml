@@ -14,4 +14,15 @@
   roles:
     - common
     - docker   
+    - docker-jenkins
  
+- name: "deploy docker-jenkins ansible role" #cd server
+  gather_facts: true
+  hosts: vg-compute-12
+  become: yes
+  roles:
+    - common
+    - docker  
+    - docker-registry
+    - docker-jenkins
+    
